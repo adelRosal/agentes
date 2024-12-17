@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  agent:
+    build: .
+    ports:
+      - "4000:4000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    volumes:
+      - ./config:/app/config 
