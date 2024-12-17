@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: sap_scrapper_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
+    networks:
+      - sap_network
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: sap_scrapper_app
+    depends_on:
+      - mongodb
+    environment:
+      - MONGODB_URI=mongodb://admin:admin123@mongodb:27017/
+      - DATABASE_NAME=sap_tables
+      - LOG_LEVEL=INFO
+      - SCRAPER_RATE_LIMIT=2
+    volumes:
+      - ../contracts:/app/contracts
+    networks:
+      - sap_network
+
+volumes:
+  mongodb_data:
+
+networks:
+  sap_network:
+    driver: bridge

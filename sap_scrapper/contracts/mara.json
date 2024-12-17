@@ -1,0 +1,35 @@
+{
+  "table_name": "MARA",
+  "description": "General Material Data",
+  "category": "TRANSP",
+  "delivery_class": "A",
+  "fields": [
+    {
+      "name": "MATNR",
+      "type": "CHAR",
+      "length": 18,
+      "description": "Material Number",
+      "key": true
+    },
+    {
+      "name": "ERSDA",
+      "type": "DATS",
+      "length": 8,
+      "description": "Created On",
+      "key": false
+    },
+    {
+      "name": "ERNAM",
+      "type": "CHAR",
+      "length": 12,
+      "description": "Name of Person who Created the Object",
+      "key": false
+    }
+  ],
+  "metadata": {
+    "source": "sapdatasheet.org",
+    "scraper_version": "1.0.0",
+    "scraped_at": "2024-03-14T12:34:56.789Z"
+  },
+  "last_updated": "2024-03-14T12:34:56.789Z"
+} 
