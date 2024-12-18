@@ -1,0 +1,7 @@
+Mucho mejor!
+1.- Noto que en los contratos el table_name está vacío.
+2.- Al contrato hace falta decir que es una tabla escrapeada y la liga de dónde se obtuvo en la fuente.
+3.- Veo que hay secciones de los contratos en los que viene la información por deafult del template. Es mejor que si no existe, en el contrato pongamos un estatus por seccion en donde digamos que no se encontro y que se elimine lo que no sirva.
+4.-Sigo sin ver información valiosa de las páginas, por ejemplo hya una sección que dice cual es la catagoría de la tabla que esperaría que se almacenará en el contrato así como otras cosas que la LLM debiera detectar.
+5.- ¿Hay manera de que las peticiones sean asíncronas para acelerar la descarga?
+6.- me gustaría poder en un archivo listar las tablas que me interesan y sólo escrapear esas.

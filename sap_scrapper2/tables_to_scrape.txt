@@ -1,0 +1,10 @@
+# Lista de tablas SAP a scrapear
+# Una tabla por línea, los comentarios se ignoran
+
+# Tablas de CRM
+/1BEA/CRMR_RDLP
+/1BEA/CRMR_REXH
+
+# Tablas de Billing
+/1BEA/BBEA_BDH
+/1BEA/BBEA_BDI 

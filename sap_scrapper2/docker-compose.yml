@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  scraper:
+    build: .
+    volumes:
+      - ./contracts:/app/contracts
+      - ./logs:/app/logs
+      - ./src:/app/src
+      - ./templates:/app/templates
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - UID=${UID:-1000}
+      - GID=${GID:-1000}
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - scraper-net
+    user: "${UID:-1000}:${GID:-1000}"
+
+networks:
+  scraper-net:
+    driver: bridge 

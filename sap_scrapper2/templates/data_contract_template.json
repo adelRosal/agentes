@@ -1,0 +1,572 @@
+{
+  "metadata": {
+    "description": "Sección que contiene información general del contrato de datos",
+    "properties": {
+      "contract_name": {
+        "description": "Nombre identificativo del contrato de datos",
+        "type": "string",
+        "example": "Sales Data Contract",
+        "required": true
+      },
+      "version": {
+        "description": "Versión del contrato siguiendo semver",
+        "type": "string",
+        "example": "1.0.0",
+        "required": true
+      },
+      "last_updated": {
+        "description": "Fecha y hora de última actualización en formato ISO",
+        "type": "string",
+        "format": "datetime",
+        "example": "2024-12-09T18:25:01Z",
+        "required": true
+      }
+    }
+  },
+  "source_information": {
+    "description": "Información general sobre la fuente de datos",
+    "properties": {
+      "source_id": {
+        "description": "Identificador único de la fuente de datos",
+        "type": "string",
+        "example": ["SALES_001", "INVENTORY_002", "FINANCE_003"],
+        "required": true
+      },
+      "name": {
+        "description": "Nombre descriptivo de la fuente de datos",
+        "type": "string",
+        "example": ["Sales Transactions", "Customer Data", "Product Catalog"],
+        "required": true
+      },
+      "source_type": {
+        "description": "Tipo de recopilación de datos",
+        "type": "string",
+        "enum": ["Analytical", "Operational", "Master Data", "Reference Data"],
+        "required": true
+      },
+      "frequency": {
+        "description": "Frecuencia de actualización de los datos",
+        "type": "string",
+        "enum": ["Real-time", "Daily", "Weekly", "Monthly", "Yearly"],
+        "required": true
+      },
+      "operational_system": {
+        "description": "Sistema operativo donde reside la fuente",
+        "type": "string",
+        "example": ["BigQuery", "Snowflake", "Redshift", "PostgreSQL"],
+        "required": true
+      },
+      "owner": {
+        "description": "Propietario o responsable de la fuente de datos",
+        "type": "string",
+        "example": ["Data Engineering Team", "Business Intelligence", "Finance Department"],
+        "required": true
+      },
+      "data_classification": {
+        "description": "Nivel de sensibilidad de los datos",
+        "type": "string",
+        "enum": ["Public", "Internal", "Confidential", "Restricted", "High"],
+        "required": true
+      }
+    }
+  },
+  "technical_specifications": {
+    "description": "Especificaciones técnicas de la fuente de datos",
+    "properties": {
+      "source_details": {
+        "description": "Detalles específicos de la fuente",
+        "type": "object",
+        "properties": {
+          "database": {
+            "description": "Nombre de la base de datos",
+            "type": "string",
+            "required": true
+          },
+          "schema": {
+            "description": "Esquema donde reside la tabla",
+            "type": "string",
+            "required": true
+          },
+          "table": {
+            "description": "Nombre de la tabla o vista",
+            "type": "string",
+            "required": true
+          },
+          "type": {
+            "description": "Tipo de objeto en base de datos",
+            "enum": ["TABLE", "VIEW", "MATERIALIZED_VIEW"],
+            "required": true
+          }
+        }
+      },
+      "environment": {
+        "description": "Información del entorno de desarrollo",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Nombre del entorno",
+            "example": ["Development", "Staging", "Production"]
+          },
+          "environment_id": {
+            "description": "Identificador único del entorno",
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "field_specifications": {
+    "description": "Especificación detallada de todos los campos/atributos del conjunto de datos",
+    "properties": {
+      "attributes": {
+        "description": "Diccionario de todos los campos/atributos",
+        "type": "object",
+        "patternProperties": {
+          ".*": {
+            "description": "Definición de cada campo",
+            "type": "object",
+            "properties": {
+              "data_type": {
+                "description": "Tipo de dato del campo",
+                "enum": ["integer", "string", "date", "timestamp", "numeric", "boolean", "array", "object"],
+                "example": "string",
+                "required": true
+              },
+              "description": {
+                "description": "Descripción detallada del campo",
+                "type": "string",
+                "example": "Identificador único del cliente",
+                "required": true
+              },
+              "is_pk": {
+                "description": "Indica si el campo es llave primaria",
+                "type": "boolean",
+                "default": false
+              },
+              "is_fk": {
+                "description": "Indica si el campo es llave foránea",
+                "type": "boolean",
+                "default": false
+              },
+              "fk_reference": {
+                "description": "Referencia a la tabla y campo si es llave foránea",
+                "type": "object",
+                "properties": {
+                  "table": {"type": "string"},
+                  "field": {"type": "string"}
+                }
+              },
+              "nullable": {
+                "description": "Indica si el campo puede contener valores nulos",
+                "type": "boolean",
+                "default": true
+              },
+              "unique": {
+                "description": "Indica si el campo debe contener valores únicos",
+                "type": "boolean",
+                "default": false
+              },
+              "business_rules": {
+                "description": "Reglas de negocio específicas para el campo",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "rule": {"type": "string"},
+                    "validation": {"type": "string"}
+                  }
+                }
+              },
+              "format": {
+                "description": "Formato esperado del campo",
+                "type": "string",
+                "example": "YYYY-MM-DD"
+              },
+              "enum_values": {
+                "description": "Lista de valores permitidos si el campo es una enumeración",
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "example": {
+                "description": "Ejemplo de valor válido para el campo",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "example": {
+          "customer_id": {
+            "data_type": "string",
+            "description": "Identificador único del cliente",
+            "is_pk": true,
+            "nullable": false,
+            "unique": true,
+            "format": "UUID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "email": {
+            "data_type": "string",
+            "description": "Correo electrónico del cliente",
+            "nullable": false,
+            "unique": true,
+            "business_rules": [
+              {
+                "rule": "format_validation",
+                "validation": "^[A-Za-z0-9+_.-]+@(.+)$"
+              }
+            ],
+            "example": "usuario@dominio.com"
+          },
+          "status": {
+            "data_type": "string",
+            "description": "Estado actual del cliente",
+            "nullable": false,
+            "enum_values": ["active", "inactive", "suspended"],
+            "example": "active"
+          }
+        }
+      },
+      "key_constraints": {
+        "description": "Definición de restricciones de llaves",
+        "type": "object",
+        "properties": {
+          "primary_key": {
+            "description": "Campo o campos que forman la llave primaria",
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "foreign_keys": {
+            "description": "Definición de llaves foráneas",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fields": {"type": "array", "items": {"type": "string"}},
+                "references": {
+                  "type": "object",
+                  "properties": {
+                    "table": {"type": "string"},
+                    "fields": {"type": "array", "items": {"type": "string"}}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "business_rules": {
+    "description": "Reglas de negocio aplicables a los datos",
+    "properties": {
+      "validation_rules": {
+        "description": "Lista de reglas de validación",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "rule_id": {
+              "description": "Identificador único de la regla",
+              "type": "string"
+            },
+            "description": {
+              "description": "Descripción de la regla",
+              "type": "string"
+            },
+            "severity": {
+              "description": "Nivel de severidad si la regla falla",
+              "enum": ["ERROR", "WARNING", "INFO"]
+            }
+          }
+        }
+      }
+    }
+  },
+  "data_quality_framework": {
+    "description": "Marco de calidad de datos",
+    "properties": {
+      "quality_checks": {
+        "description": "Lista de verificaciones de calidad",
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": [
+            "completeness_check",
+            "uniqueness_check",
+            "consistency_check",
+            "freshness_check"
+          ]
+        }
+      },
+      "monitoring": {
+        "description": "Configuración de monitoreo",
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": [
+            "data_volume_monitoring",
+            "schema_change_detection",
+            "data_freshness_monitoring"
+          ]
+        }
+      }
+    }
+  },
+  "integration_context": {
+    "description": "Contexto de integración con otros sistemas",
+    "properties": {
+      "upstream_systems": {
+        "description": "Sistemas que proveen datos",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "system": {
+              "description": "Nombre del sistema",
+              "type": "string"
+            },
+            "usage": {
+              "description": "Uso o propósito",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "downstream_systems": {
+        "description": "Sistemas que consumen datos",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "system": {
+              "description": "Nombre del sistema",
+              "type": "string"
+            },
+            "usage": {
+              "description": "Uso o propósito",
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "operational_metrics": {
+    "description": "Métricas operativas calculadas sobre los datos",
+    "properties": {
+      "metrics": {
+        "description": "Lista de métricas",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "Nombre de la métrica",
+              "type": "string"
+            },
+            "description": {
+              "description": "Descripción de la métrica",
+              "type": "string"
+            },
+            "calculation": {
+              "description": "Fórmula o método de cálculo",
+              "type": "string"
+            },
+            "unit": {
+              "description": "Unidad de medida",
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "governance": {
+    "description": "Políticas y procedimientos de gobierno de datos",
+    "properties": {
+      "data_owners": {
+        "description": "Responsables del conjunto de datos",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "role": {
+              "description": "Rol del responsable",
+              "enum": ["Business Owner", "Technical Owner", "Data Steward", "Data Custodian"],
+              "example": "Data Steward"
+            },
+            "responsibilities": {
+              "description": "Lista de responsabilidades",
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "department": {"type": "string"},
+            "contact": {"type": "string"}
+          }
+        }
+      },
+      "compliance": {
+        "description": "Requisitos de cumplimiento normativo",
+        "type": "object",
+        "properties": {
+          "regulations": {
+            "description": "Regulaciones aplicables",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string", "example": "GDPR"},
+                "requirements": {"type": "array", "items": {"type": "string"}},
+                "controls": {"type": "array", "items": {"type": "string"}}
+              }
+            }
+          },
+          "data_privacy": {
+            "description": "Clasificación y manejo de privacidad",
+            "type": "object",
+            "properties": {
+              "pii_fields": {"type": "array", "items": {"type": "string"}},
+              "masking_rules": {"type": "object"},
+              "retention_policy": {"type": "string"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "lineage": {
+    "description": "Linaje y dependencias de datos",
+    "properties": {
+      "upstream_dependencies": {
+        "description": "Fuentes de datos upstream",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "source": {"type": "string"},
+            "fields": {"type": "array", "items": {"type": "string"}},
+            "transformation": {"type": "string"}
+          }
+        }
+      },
+      "downstream_dependencies": {
+        "description": "Consumidores downstream",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "consumer": {"type": "string"},
+            "fields_used": {"type": "array", "items": {"type": "string"}},
+            "usage_type": {"type": "string"}
+          }
+        }
+      }
+    }
+  },
+  "sla": {
+    "description": "Acuerdos de nivel de servicio",
+    "properties": {
+      "availability": {
+        "description": "Requisitos de disponibilidad",
+        "type": "object",
+        "properties": {
+          "uptime_percentage": {"type": "number"},
+          "maintenance_window": {"type": "string"}
+        }
+      },
+      "freshness": {
+        "description": "Requisitos de frescura de datos",
+        "type": "object",
+        "properties": {
+          "max_delay": {"type": "string"},
+          "update_frequency": {"type": "string"}
+        }
+      },
+      "performance": {
+        "description": "Métricas de rendimiento",
+        "type": "object",
+        "properties": {
+          "query_response_time": {"type": "string"},
+          "concurrent_users": {"type": "number"}
+        }
+      }
+    }
+  },
+  "data_lifecycle": {
+    "description": "Gestión del ciclo de vida de los datos",
+    "properties": {
+      "ingestion": {
+        "description": "Proceso de ingesta de datos",
+        "type": "object",
+        "properties": {
+          "method": {"type": "string"},
+          "frequency": {"type": "string"},
+          "validation_steps": {"type": "array", "items": {"type": "string"}}
+        }
+      },
+      "retention": {
+        "description": "Política de retención de datos",
+        "type": "object",
+        "properties": {
+          "duration": {"type": "string"},
+          "archive_policy": {"type": "string"},
+          "deletion_policy": {"type": "string"}
+        }
+      },
+      "archival": {
+        "description": "Estrategia de archivo",
+        "type": "object",
+        "properties": {
+          "criteria": {"type": "string"},
+          "storage_location": {"type": "string"},
+          "format": {"type": "string"}
+        }
+      }
+    }
+  },
+  "versioning": {
+    "description": "Control de versiones del contrato",
+    "properties": {
+      "version_history": {
+        "description": "Historial de cambios",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "version": {"type": "string"},
+            "date": {"type": "string"},
+            "changes": {"type": "array", "items": {"type": "string"}},
+            "approved_by": {"type": "string"}
+          }
+        }
+      },
+      "deprecation_policy": {
+        "description": "Política de deprecación",
+        "type": "object",
+        "properties": {
+          "notice_period": {"type": "string"},
+          "migration_path": {"type": "string"}
+        }
+      }
+    }
+  },
+  "documentation": {
+    "description": "Documentación adicional",
+    "properties": {
+      "data_dictionary": {
+        "description": "URL o referencia al diccionario de datos",
+        "type": "string"
+      },
+      "known_issues": {
+        "description": "Problemas conocidos y limitaciones",
+        "type": "array",
+        "items": {"type": "string"}
+      },
+      "usage_examples": {
+        "description": "Ejemplos de uso común",
+        "type": "array",
+        "items": {"type": "string"}
+      }
+    }
+  }
+}

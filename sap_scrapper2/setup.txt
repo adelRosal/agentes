@@ -1,0 +1,78 @@
+Configuración del Proyecto SAP Table Scraper
+==========================================
+
+1. Estructura de Archivos
+------------------------
+Asegúrate de tener la siguiente estructura:
+
+/sap_scrapper2
+  /src
+    __init__.py
+    scraper.py
+    parser.py
+    generator.py
+  /contracts
+  /templates
+  /logs
+  docker-compose.yml
+  Dockerfile
+  requirements.txt
+  .env.example
+  .gitignore
+  README.txt
+
+2. Configuración Inicial
+-----------------------
+1. Copia .env.example a .env y configura las variables:
+   cp .env.example .env
+
+2. Construye la imagen de Docker:
+   docker-compose build
+
+3. Inicia el contenedor:
+   docker-compose up
+
+4. Para ejecutar en modo background:
+   docker-compose up -d
+
+5. Para ver logs:
+   docker-compose logs -f
+
+3. Comandos Útiles
+-----------------
+- Detener contenedor:
+  docker compose down
+
+- Reiniciar contenedor:
+  docker compose restart
+
+- Ejecutar scraper manualmente:
+  docker compose run --rm scraper python src/scraper.py
+
+4. Estructura de Datos
+---------------------
+Los contratos se guardarán en:
+./contracts/<tabla>.json
+
+Los logs se guardarán en:
+./logs/scraper.log
+
+5. Mantenimiento
+---------------
+- Limpiar caché:
+  docker-compose run --rm scraper python src/scraper.py --clean-cache
+
+- Actualizar dependencias:
+  docker-compose run --rm scraper pip install -r requirements.txt --upgrade
+
+6. Troubleshooting
+-----------------
+- Si hay problemas de permisos:
+  sudo chown -R $USER:$USER .
+
+- Si hay problemas de red:
+  docker network prune
+
+- Para reiniciar desde cero:
+  docker-compose down -v
+  docker-compose up --build 
